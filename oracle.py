@@ -62,6 +62,7 @@ if len(sys.argv) > 1:
     CTBlocks = [map(ord, list(ctext[i:i+16])) for i in range(0, len(ctext), 16)]
 
     PTBlocks = [None] * len(CTBlocks)
+
     for i in range(0, len(CTBlocks)):
         PTBlocks[i] = [0] * 16
 
@@ -71,6 +72,7 @@ if len(sys.argv) > 1:
     for BlockNdx in reversed(range(1, len(CTBlocks))):
         TempCTBlocks[BlockNdx] = copy.deepcopy(CTBlocks[BlockNdx])
         XorBytes = [0] * 16
+
         for ByteNdx in reversed(range(0, 16)):
             PossibleValue = None
 
@@ -98,15 +100,12 @@ if len(sys.argv) > 1:
 
             if (PossibleValue is not None):
                 TempCTBlocks[BlockNdx - 1][14] += 1
-                TempCTBlocks[BlockNdx - 1][14]
 
                 if (PadOracle(LLIntsToCT(TempCTBlocks, BlockNdx)) is False):
                     PTBlocks[BlockNdx][ByteNdx] = PossibleValue
                     TempCTBlocks[BlockNdx - 1][ByteNdx] = copy.deepcopy(PossibleNewByte)
 
-
                 TempCTBlocks[BlockNdx - 1][14] -= 1
-                TempCTBlocks[BlockNdx - 1][14]
 
             for i in range(ByteNdx, 16):
                 TempCTBlocks[BlockNdx - 1][i] = XorBytes[i] ^ PTBlocks[BlockNdx][i] ^ (17 - ByteNdx)
